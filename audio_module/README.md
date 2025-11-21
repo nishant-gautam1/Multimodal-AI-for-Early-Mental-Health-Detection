@@ -73,7 +73,7 @@ This displays accuracy metrics and the confusion matrix.
 
 - Start the Flask server:  
   python flask_app/app_audio_lstm.py
-- Open: http://127.0.0.1:5000/
+- Open the URL generated after you run the flask application.
 
 Upload a .wav file to receive predictions for mental health categories.
 
