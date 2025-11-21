@@ -50,5 +50,5 @@ Download:
 https://tspace.library.utoronto.ca/handle/1807/24487
 
 Place both datasets in:  
-- audio_modue/data/raw/RAVDESS/  
+- audio_module/data/raw/RAVDESS/  
 - audio_module/data/raw/TESS/
