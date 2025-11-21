@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Audio Mental Health Detection</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align:center; margin-top:40px; }
+    .card { display:inline-block; padding:20px; border:1px solid #ddd; border-radius:8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    input[type=file] { margin-top:10px; }
+    .result { margin-top:20px; font-size:1.1rem; font-weight:600; color:#094; }
+    .error { margin-top:20px; color:#d33; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎧 Audio Mental Health Detection</h2>
+    <p>Upload a short <strong>.wav</strong> file (3 sec recommended).</p>
+
+    <form action="/predict" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".wav" required><br><br>
+      <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result">Prediction: <strong>{{ prediction }}</strong> — Confidence: {{ confidence }}</div>
+    {% endif %}
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <hr style="margin-top:18px;">
+    <small>Or use the API: POST /api/predict (multipart-form 'file')</small>
+  </div>
+</body>
+</html>
