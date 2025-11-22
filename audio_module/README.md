@@ -1,4 +1,4 @@
-**AI for Early Mental Health Detection – Audio Classification Model**
+# AI for Early Mental Health Detection – Audio Classification Model
 
 This repository contains the audio-based component of the AI for Early Mental Health Detection system.
 The objective of this module is to analyze short speech recordings and classify them into three mental health-related states:  
