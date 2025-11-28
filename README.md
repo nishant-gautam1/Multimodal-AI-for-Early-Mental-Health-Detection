@@ -30,9 +30,14 @@ The system architecture consists of three independent models, one for each input
 - MFCC features are extracted and fed into an LSTM model for emotion classification.
 
 3.2 Text Processing
-
-- Text data undergo preprocessing that includes tokenization, stopword removal, and normalization.
-- Cleaned sequences are fed to an LSTM model for sentiment or emotion classification.
+  - Text data undergoes preprocessing that includes tokenization, truncation/padding, and optional normalization. Each sentence is converted into token IDs and attention masks using a BERT tokenizer. The          processed sequences are then fed to a BERT-based sequence classification model for sentiment, mental status, or emotion classification.
+      
+     - Key steps:
+      
+     - Tokenization: Split text into BERT tokens and convert to IDs.
+     - Padding and Truncation: Ensure all sequences are the same length (max_length=200).
+     - Conversion to tensors: Prepare input IDs and attention masks for the model.
+     - Feeding to BERT: The preprocessed sequences are input to the model, which predicts the class label.
 
 3.3 Image Processing
 
