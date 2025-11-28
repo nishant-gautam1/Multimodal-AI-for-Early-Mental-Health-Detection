@@ -33,7 +33,7 @@ https://www.kaggle.com/datasets/uwrfkaggler/ravdess-emotional-speech-audio
 **TESS** – Toronto Emotional Speech Set  
 A clean emotional speech dataset consisting of seven emotions recorded by two speakers.  
 Download:
-https://tspace.library.utoronto.ca/handle/1807/24487
+https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess
 
 Place both datasets in:  
 - audio_module/data/raw/RAVDESS/  
