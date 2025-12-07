@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Text Prediction Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Text Prediction Demo</h1>
+      <p class="hint">Type a short sentence below and click <strong>Predict</strong>.</p>
+    </header>
+
+    <main class="card">
+      <label for="textInput" class="label">Enter text</label>
+      <textarea id="textInput" placeholder="I am feeling sad today..." rows="6"></textarea>
+
+      <div class="row">
+        <button id="predictBtn" class="btn primary">Predict</button>
+        <button id="clearBtn" class="btn">Clear</button>
+        <div id="status" class="status">Ready</div>
+      </div>
+
+      <section id="result" class="result">
+        <h3>Prediction</h3>
+        <div id="resultContent" class="resultContent">
+          <p class="muted">No prediction yet.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>API: <code>/api/predict</code> — POST JSON { "text": "..." }</small>
+    </footer>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const textInput = document.getElementById("textInput");
+  const predictBtn = document.getElementById("predictBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const statusDiv = document.getElementById("status");
+  const resultContent = document.getElementById("resultContent");
+
+  function setStatus(msg, busy=false) {
+    statusDiv.textContent = msg;
+    if (busy) statusDiv.classList.add("busy"); else statusDiv.classList.remove("busy");
+  }
+
+  predictBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const text = textInput.value.trim();
+    if (!text) {
+      alert("Please enter some text to predict.");
+      textInput.focus();
+      return;
+    }
+    setStatus("Predicting...", true);
+    resultContent.innerHTML = "<p class='muted'>Waiting for server...</p>";
+    try {
+      const resp = await fetch("/api/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text})
+      });
+      if (!resp.ok) {
+        const txt = await resp.text();
+        resultContent.innerHTML = `<pre class="error">${txt}</pre>`;
+        setStatus("Error");
+        return;
+      }
+      const data = await resp.json();
+      // Flexible handling of different response shapes
+      // prefer data.label, then data.predicted_label, then data.mapped_label
+      const label = data.label ?? data.predicted_label ?? data.mapped_label ?? data.prediction ?? null;
+      const score = data.score ?? data.predicted_score ?? data.confidence ?? null;
+      const probs = data.probs ?? data.predictions ?? data.all ?? null;
+      // render
+      let html = "";
+      if (label) {
+        html += `<p><strong>Label:</strong> ${label}</p>`;
+      } else {
+        html += `<p><strong>Label:</strong> (no label in response)</p>`;
+      }
+      if (score !== null && score !== undefined) {
+        html += `<p><strong>Confidence:</strong> ${Number(score).toFixed(3)}</p>`;
+      }
+      // show probs if available (array of numbers) or all if array of {label,score}
+      if (Array.isArray(probs) && probs.length && typeof probs[0] === "number") {
+        html += `<details><summary>Probabilities</summary><pre>${JSON.stringify(probs.map(p => Number(p).toFixed(4)), null, 2)}</pre></details>`;
+      } else if (Array.isArray(probs) && probs.length && typeof probs[0] === "object") {
+        html += `<details><summary>Scores</summary><pre>${JSON.stringify(probs, null, 2)}</pre></details>`;
+      } else {
+        // nothing
+      }
+      // include raw response for debugging
+      html += `<details><summary>Raw response</summary><pre>${JSON.stringify(data, null, 2)}</pre></details>`;
+      resultContent.innerHTML = html;
+      setStatus("Done");
+    } catch (err) {
+      resultContent.innerHTML = `<pre class="error">${err.message}</pre>`;
+      setStatus("Error");
+    } finally {
+      setStatus("Ready", false);
+    }
+  });
+
+  clearBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    textInput.value = "";
+    resultContent.innerHTML = `<p class="muted">No prediction yet.</p>`;
+    setStatus("Ready");
+    textInput.focus();
+  });
+});
+</script>
+</body>
+</html>
