@@ -33,46 +33,50 @@ python flask_app/text_model.py
 
 ---
 
-## 🖼️ Image Module - Complete Implementation
+##  Audio Module - Complete Implementation
 
 ### What Was Created
-✅ Complete new module with 9 files:
-- Dataset research document
-- README and requirements
-- Image utilities (face detection, preprocessing)
-- Preprocessing, training, evaluation scripts
-- Flask API with modern web interface
+✅ 4 new Python scripts in audio_module/src/ (plus model and Flask demo):
+   - `audio_utils.py` — Utility functions (I/O, resampling, feature helpers)
+   - `preprocessing.py` — Audio preprocessing & MFCC / feature extraction
+   - `train_audio_model_lstm.py` — LSTM training script (saves audio_lstm_model.h5)
+   - `evaluate.py` — Model evaluation & metrics
 
 ### Quick Start
 ```bash
-cd image_module
+cd audio_module
 
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Download FER-2013 dataset
-# Visit: https://www.kaggle.com/datasets/msambare/fer2013
-# Extract to: data/raw/FER2013/
+# 2. Prepare dataset
+# Place audio files under: audio_module/data/raw/
+# (Maintain folder structure expected by preprocessing.py; typically class subfolders or a CSV mapping)
 
-# 3. Preprocess data
+# 3. Preprocess audio and extract features (MFCCs)
 python src/preprocessing.py
 
-# 4. Train CNN model
-python src/train_image_model.py
+# 4. Train LSTM audio model
+python src/train_audio_model_lstm.py
 
 # 5. Evaluate model
 python src/evaluate.py
 
-# 6. Run Flask API
-python flask_app/app_image.py
-# Access: http://localhost:5002
+# 6. Run existing Flask API for demo/inference
+python flask_app/app_audio.py
+# Then visit or query the endpoint (check app_audio.py for exact route and port)
 ```
 
 ### Requirements
-- Dataset: FER-2013 (35,887 images, ~300MB)
-- GPU recommended
-- Training time: ~1-2 hours (GPU), ~4-6 hours (CPU)
+- Dataset: audio files (not included) — put under audio_module/data/raw/ (or follow README instructions)
+- Python packages: see audio_module/requirements.txt (typical: librosa, soundfile, numpy, scikit-learn, tensorflow or torch, flask)
+- GPU recommended (8GB+ VRAM) for faster training
+- Training time: ~30–90 minutes (GPU), ~2–4 hours (CPU) — depends on dataset size & hyperparameters
 
+### Model files (existing / expected locations)
+- audio_module/model/audio_lstm_model.h5 — trained LSTM model (Keras .h5)
+- audio_module/model/audio_label_encoder.pkl — label encoder for classes
+  
 ---
 
 ## 🎯 Key Features
@@ -84,99 +88,67 @@ python flask_app/app_image.py
 - ✅ Compatible with existing Flask API
 
 ### Image Module
-- ✅ Face detection (Haar Cascade + MTCNN)
-- ✅ Custom CNN architecture
-- ✅ Data augmentation
-- ✅ Modern web interface with drag-and-drop
-- ✅ REST API on port 5002
-- ✅ 3-class mental health classification
+- ✅ MFCC + spectral features (MFCC, delta, chroma, spectral centroid)
+- ✅ LSTM-based sequence model (saved as model/audio_lstm_model.h5)
+- ✅ Audio preprocessing (resampling, mono, noise reduction, silence trimming)
+- ✅ Data augmentation (time-stretch, pitch-shift, noise injection)
+- ✅ On-device feature normalization & fixed-length framing for LSTM input
+- ✅ Flask REST API (flask_app/app_audio.py) — default port 5000 (check file)
+- ✅ Demo UI template for uploading .wav files (multipart/form-data)
+- ✅ 3-class mental-health classification (labels in model/audio_label_encoder.pkl)
 
 ---
 
 ## 📊 Module Comparison
 
-| Feature | Audio | Text | Image |
-|---------|-------|------|-------|
-| **Status** | ✅ Complete | ✅ Enhanced | ✅ Complete |
+| Feature | Audio | Text | 
+|---------|-------|------|
+| **Status** | ✅ Complete | ✅ Enhanced | 
 | **Model** | LSTM | BERT | CNN |
-| **Input** | .wav files | Text strings | Images |
-| **Classes** | 3 | 7 | 3 |
-| **Port** | 5000 | 5000 | 5002 |
+| **Input** | .wav files | Text strings | 
+| **Classes** | 3 | 7 | 
+| **Port** | 5000 | 5000 | 
 
 ---
 
-## 🚀 Next Steps
 
-1. **Download Datasets**
-   - Text: `Combined_Data_Expanded.csv`
-   - Image: FER-2013 from Kaggle
-
-2. **Train Models**
-   - Run preprocessing scripts
-   - Train models (GPU recommended)
-   - Evaluate performance
-
-3. **Test APIs**
-   - Run Flask applications
-   - Test predictions via web interface
-   - Test API endpoints
-
-4. **Future Development**
-   - Implement multimodal fusion
-   - Create unified API gateway
-   - Build Streamlit application
-
----
 
 ## 📁 File Locations
 
 ### Text Module
 ```
 text_module/src/
-├── text_utils.py              [NEW]
-├── text_preprocessing.py      [NEW]
-├── train_text_model.py        [NEW]
-└── evaluate_text.py           [NEW]
+├── text_utils.py             
+├── text_preprocessing.py      
+├── train_text_model.py       
+└── evaluate_text.py           
 ```
 
-### Image Module
+### Audio Module
 ```
-image_module/
-├── dataset_research.md        [NEW]
-├── README.md                  [NEW]
-├── requirements.txt           [NEW]
+audio_module/
+├── requirements.txt
+├── data/
+│   └── raw/         # audio files or dataset subfolders
 ├── src/
-│   ├── image_utils.py         [NEW]
-│   ├── preprocessing.py       [NEW]
-│   ├── train_image_model.py   [NEW]
-│   └── evaluate.py            [NEW]
+│   ├── audio_utils.py
+│   ├── preprocessing.py
+│   ├── feature_extraction.py
+│   ├── train_audio_model.py
+│   └── evaluate_audio.py
 └── flask_app/
-    ├── app_image.py           [NEW]
-    └── templates/
-        └── image_upload.html  [NEW]
+    └── audio_model.py
 ```
 
 ---
 
 ## ⚠️ Important Notes
 
-- **No existing files were modified** - All changes are new files
-- **Port 5002** for image module (avoids conflict with audio/text on 5000)
-- **Datasets not included** - Must download separately
-- **GPU recommended** - Significantly faster training
-- **Development only** - No deployment configurations
-
+- **Datasets are not included** — You must manually place the required files in each module’s data folder.
+- **Preprocessing is required before training** — Both text and audio pipelines depend on processed outputs generated by their respective preprocessing scripts.
+- **GPU strongly recommended** — BERT (text) and LSTM (audio) training are slow on CPU; at least 8GB VRAM is suggested.
+- **Model artifacts are auto-saved** — Ensure `models/` (text) and `model/` (audio) folders exist for saving weights and label encoders.
+- **APIs require trained models** — Run training first; otherwise the Flask apps cannot load model files.
+- **Keep file paths consistent** — Incorrect or missing paths will cause preprocessing, training, or API loading errors.
 ---
 
-## 📚 Documentation
-
-- **Text Module:** See inline comments in each script
-- **Image Module:** See [README.md](file:///c:/Users/Srish/Documents/GitHub/Multimodal-AI-for-Early-Mental-Health-Detection/image_module/README.md)
-- **Dataset Research:** See [dataset_research.md](file:///c:/Users/Srish/Documents/GitHub/Multimodal-AI-for-Early-Mental-Health-Detection/image_module/dataset_research.md)
-- **Complete Walkthrough:** See walkthrough.md artifact
-
----
-
-**Status:** ✅ Development Complete  
-**Ready for:** Dataset acquisition and model training  
-**Total Files Created:** 13 new files
