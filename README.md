@@ -6,12 +6,16 @@ Each modality captures unique behavioral cues, and the combination of these sign
 
 The system processes each modality through separate learning pipelines and merges their outputs using a fusion model to provide a single final prediction. This repository includes preprocessing scripts, training modules, and a Streamlit-based application for demonstration.
 
+---
+
 **2. Problem Statement**
 
 Traditional mental health assessment methods rely heavily on manual evaluation and self-reported symptoms. These approaches are subjective and often insufficient for early detection. The lack of automated systems capable of handling real-world multimodal user inputs creates a barrier in providing timely support.
 
 Problem:  
 Develop an integrated AI system capable of analyzing audio, text, and facial data to detect early indicators of mental health conditions reliably and efficiently.
+
+---
 
 **3. Objectives**
 **Primary Objectives**
@@ -27,6 +31,8 @@ Develop an integrated AI system capable of analyzing audio, text, and facial dat
 - To integrate all components using a Flask-based microservice architecture.
 - To design an interpretable system suitable for supervised research demonstration.
   
+---
+  
 **4. Features**
 
 - Speech Emotion Recognition using MFCC-based feature extraction and LSTM networks.  
@@ -35,7 +41,9 @@ Develop an integrated AI system capable of analyzing audio, text, and facial dat
 - Multimodal Fusion Model that combines embeddings from audio, text, and image models.  
 - Preprocessing pipelines for all modalities.  
 - Interactive application interface built using Streamlit.  
-- Organized modular project structure suitable for academic or research use.  
+- Organized modular project structure suitable for academic or research use.
+  
+---
 
 **5. Methodology**  
 
@@ -72,30 +80,34 @@ The system architecture consists of three independent models, one for each input
   
 This fusion allows the system to utilize complementary cues from multiple modalities.
 
+---
+
 **6. Technologies Used**
 - Machine Learning & Deep Learning
 - TensorFlow / Keras
 - PyTorch (optional for some preprocessing)
 - Transformers (HuggingFace)
   
-**Audio Processing**
+**Audio Processing:**
 - Librosa
 - NumPy
 - Scikit-learn
 
-**Text Processing**
+**Text Processing:**
 - Transformers
 - Tokenizers
 - NLTK
 
-**Backend / Deployment**
+**Backend / Deployment:**
 - Flask
 - REST API
 - Python
 
-**Frontend**
+**Frontend:**
 - HTML / CSS / JS
   
+---
+
 **7. Key Learnings**
 - Understanding multimodal deep learning workflows
 - Speech feature engineering (MFCC, delta features)
@@ -104,6 +116,8 @@ This fusion allows the system to utilize complementary cues from multiple modali
 - Deployment of ML models using Flask microservices
 - Handling class imbalance & real-world noisy data
 - Integration of three different AI pipelines into a unified system
+  
+---
 
 **8. Future Work**
 - Use large-scale multimodal datasets for improved training
