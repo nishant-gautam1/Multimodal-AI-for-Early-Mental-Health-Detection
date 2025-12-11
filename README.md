@@ -17,7 +17,8 @@ Develop an integrated AI system capable of analyzing audio, text, and facial dat
 
 ---
 
-**3. Objectives**
+**3. Objectives**  
+
 **Primary Objectives**
 
 - To build a unified AI system that predicts mental-health conditions from text, audio, and facial images.
